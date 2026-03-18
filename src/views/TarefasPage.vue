@@ -36,6 +36,7 @@
 
           <ion-button
             color="danger"
+            fill="clear"
             slot="end"
             @click="removerTarefa(index)"
           >
