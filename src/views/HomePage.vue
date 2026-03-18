@@ -28,4 +28,6 @@ IonTitle,
 IonContent,
 IonButton
 } from '@ionic/vue'
+
+
 </script>
