@@ -6,14 +6,16 @@
       </ion-toolbar>
     </ion-header>
 
-    <ion-content class="ion-padding">
+    <ion-content class="ion-padding center-content">
 
-      <h2>Bem-vindo</h2>
-      <p>Gerencie suas tarefas facilmente.</p>
+      <div class="box">
+        <h2>Bem-vindo</h2>
+        <p>Gerencie suas tarefas facilmente.</p>
 
-      <ion-button expand="block" @click="$router.push('/tarefas')">
-        Ir para Tarefas
-      </ion-button>
+        <ion-button expand="block" @click="$router.push('/tarefas')">
+          Ir para Tarefas
+        </ion-button>
+      </div>
 
     </ion-content>
   </ion-page>
@@ -21,13 +23,11 @@
 
 <script setup>
 import {
-IonPage,
-IonHeader,
-IonToolbar,
-IonTitle,
-IonContent,
-IonButton
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonButton
 } from '@ionic/vue'
-
-
 </script>
