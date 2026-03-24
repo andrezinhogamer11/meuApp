@@ -1,18 +1,17 @@
-// src/composables/useTarefas.ts
 import { ref, computed, watch } from 'vue'
-
+ 
 interface Tarefa {
   id: number
   texto: string
   feita: boolean
 }
-
+ 
 export function useTarefas() {
   const tarefas = ref<Tarefa[]>([])
   const busca = ref('')
   const filtroAtivo = ref<'todas' | 'pendentes' | 'feitas'>('todas')
-
-  // computed: filtra por texto de busca E pelo filtro ativo
+ 
+  // Filtra por texto de busca E pelo filtro ativo (pendentes/feitas)
   const filtradas = computed(() => {
     const termo = busca.value.toLowerCase()
     return tarefas.value
@@ -23,33 +22,35 @@ export function useTarefas() {
         return true
       })
   })
-
-  // computed: total de pendentes
+ 
+  // Total de tarefas pendentes para o alerta
   const totalPendentes = computed(
     () => tarefas.value.filter(t => !t.feita).length
   )
-
+ 
   function adicionar(texto: string) {
     if (!texto.trim()) return
     tarefas.value.push({ id: Date.now(), texto, feita: false })
   }
-
+ 
   function remover(id: number) {
     tarefas.value = tarefas.value.filter(t => t.id !== id)
   }
-
+ 
   function concluir(id: number) {
     const t = tarefas.value.find(t => t.id === id)
     if (t) t.feita = !t.feita
   }
-
-  // watch para alerta de conclusão (Tarefa 4)
+ 
+  // TAREFA 4: Watch para o alerta
   watch(totalPendentes, (valor) => {
     if (valor === 0 && tarefas.value.length > 0) {
       alert('🎉 Parabéns! Todas as tarefas foram concluídas!')
     }
   })
-
-  return { tarefas, busca, filtroAtivo, filtradas, totalPendentes,
-    adicionar, remover, concluir }
+ 
+  return {
+    tarefas, busca, filtroAtivo, filtradas, totalPendentes,
+    adicionar, remover, concluir
+  }
 }
