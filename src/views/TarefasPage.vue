@@ -1,75 +1,65 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonList, IonItem, IonInput, IonButton, IonSegment, IonSegmentButton, IonLabel } from '@ionic/vue';
+import { useTarefas } from '../composables/useTarefas';
+import CardTarefa from '../components/CardTarefa.vue';
+
+const { tarefas, busca, filtroAtivo, filtradas,
+  totalPendentes, adicionar, remover, concluir } = useTarefas();
+
+const novaTarefa = ref('');
+
+function adicionarNova() {
+  adicionar(novaTarefa.value);
+  novaTarefa.value = '';
+}
+</script>
+
 <template>
-  <ion-page>
-    <ion-header>
-      <ion-toolbar>
+  <IonPage>
+    <IonHeader>
+      <IonToolbar>
+        <IonTitle>Minhas Tarefas ({{ totalPendentes }} pendentes)</IonTitle>
+      </IonToolbar>
+    </IonHeader>
+    <IonContent>
+      <IonList>
+        <IonItem>
+          <IonInput
+            v-model="novaTarefa"
+            placeholder="Adicionar nova tarefa"
+            @keyup.enter="adicionarNova()"
+          />
+          <IonButton @click="adicionarNova()">Adicionar</IonButton>
+        </IonItem>
 
-        <ion-buttons slot="start">
-          <ion-back-button default-href="/"></ion-back-button>
-        </ion-buttons>
+        <IonItem>
+          <IonInput
+            v-model="busca"
+            placeholder="Buscar tarefas"
+          />
+        </IonItem>
 
-        <ion-title>Tarefas</ion-title>
+        <IonSegment v-model="filtroAtivo">
+          <IonSegmentButton value="todas">
+            <IonLabel>Todas</IonLabel>
+          </IonSegmentButton>
+          <IonSegmentButton value="pendentes">
+            <IonLabel>Pendentes</IonLabel>
+          </IonSegmentButton>
+          <IonSegmentButton value="feitas">
+            <IonLabel>Feitas</IonLabel>
+          </IonSegmentButton>
+        </IonSegment>
 
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content class="ion-padding">
-
-      <ion-item>
-        <ion-input
-          v-model="novaTarefa"
-          placeholder="Digite uma tarefa"
-        ></ion-input>
-      </ion-item>
-
-      <ion-button expand="block" @click="adicionarNova">
-        Adicionar
-      </ion-button>
-
-      <p v-if="filtradas.length === 0">
-        Nenhuma tarefa cadastrada. Adicione a primeira!
-      </p>
-
-      <ion-list v-if="filtradas.length > 0">
         <CardTarefa
-          v-for="t in filtradas"
-          :key="t.id"
-          :tarefa="t"
+          v-for="tarefa in filtradas"
+          :key="tarefa.id"
+          :tarefa="tarefa"
           @remover="remover"
           @concluir="concluir"
         />
-      </ion-list>
-
-    </ion-content>
-  </ion-page>
+      </IonList>
+    </IonContent>
+  </IonPage>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-import {
-IonPage,
-IonHeader,
-IonToolbar,
-IonTitle,
-IonContent,
-IonItem,
-IonInput,
-IonButton,
-IonList,
-IonButtons,
-IonBackButton
-} from '@ionic/vue'
-
-import { useTarefas } from '../composables/useTarefas'
-import CardTarefa from '../components/CardTarefa.vue'
-
-const {
-  filtradas, adicionar, remover, concluir
-} = useTarefas()
-
-const novaTarefa = ref("")
-
-function adicionarNova() {
-  adicionar(novaTarefa.value)
-  novaTarefa.value = ""
-}
-</script>
